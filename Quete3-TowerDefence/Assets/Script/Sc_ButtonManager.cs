@@ -9,8 +9,6 @@ public class Sc_ButtonManager : MonoBehaviour
     [SerializeField] private GameObject _victory;
     [SerializeField] private Sc_PoolSpawner _startedWave;
 
-
-
     public void StartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

@@ -36,6 +36,7 @@ public class Sc_Pool<T> : Sc_IPool<T> where T : class, Sc_IPooledObject<T>
         for (int i = 0; i < preAllocationCount; i++)
         {
             T pooledObject = InstantiatePoolObject();
+            _aliveObjectsCount++;
             Release(pooledObject);
         }
     }

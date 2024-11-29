@@ -4249,10 +4249,15 @@ MonoBehaviour:
   startedWave: 0
   _enemyPrefab: {fileID: 6927878373891355750, guid: bd123d841d3bd1f46a53fe20d5843b98, type: 3}
   _enemySpawnRate: 0.5
+  _startWaveButton: {fileID: 1805186572}
   _pathList: {fileID: 1446453900}
   _waves:
   - enemyId: 01000000
     enemyAmount: 0a000000
+  - enemyId: 0100000002000000
+    enemyAmount: 0a00000005000000
+  - enemyId: 010000000200000003000000
+    enemyAmount: 120000000a00000005000000
 --- !u!114 &1446453900
 MonoBehaviour:
   m_ObjectHideFlags: 0

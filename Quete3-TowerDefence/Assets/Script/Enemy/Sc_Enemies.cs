@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
 {
+    public float speed;
+
     [SerializeField, Min(0.0f)] private float _duration;
-    [SerializeField, Min(0.0f)] private float _speed;
 
     private float _timer;
     private Sc_Pool<Sc_Enemies> _pool;
@@ -40,7 +41,7 @@ public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
 
             _tileTarget = _tilesMap[_tileIndex];
         }
-        float step = _speed * Time.deltaTime;
+        float step = speed * Time.deltaTime;
         transform.position = Vector2.MoveTowards(transform.position, _tileTarget.transform.position, step);
     }
 

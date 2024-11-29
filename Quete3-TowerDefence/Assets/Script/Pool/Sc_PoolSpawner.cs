@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sc_PoolSpawner : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class Sc_PoolSpawner : MonoBehaviour
     
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField, Min(0.0f)] private float _enemySpawnRate = 0.5f;
+    [SerializeField] private Button _startWaveButton;
 
     [SerializeField] private Sc_Path _pathList;
     [SerializeField] private List<EnemyWaves> _waves = new List<EnemyWaves>();
@@ -15,6 +17,7 @@ public class Sc_PoolSpawner : MonoBehaviour
     private const int preAllocationCount = 50;
     
     private Sc_PoolComponent<Sc_Enemies> _enemyPool;
+    private Sc_EnemyHealth _enemyHealth;
 
     private void Awake()
     {
@@ -27,21 +30,34 @@ public class Sc_PoolSpawner : MonoBehaviour
         {
             SpawnEnemy();
         }
+
+        if (_enemyPool.AliveObjectCount <= 0)
+        {
+            _startWaveButton.interactable = true;
+        }
     }
 
     private void SpawnEnemy()
     {
+        if (_waves.Count <= _waveNumber)
+            return;
 
         EnemyWaves wave = _waves[_waveNumber];
+
         for (int i = 0; i < wave.enemyId.Count; i++) 
         {
-            for(int j = 0; j < wave.enemyAmount[i]; j++)
+            
+            for (int j = 0; j < wave.enemyAmount[i]; j++)
             {
                 Sc_Enemies enemy = _enemyPool.Get();
                 enemy.transform.position = transform.position + Vector3.left * 2 * j;
                 enemy.SetTilesMap(_pathList.pathList);
+                enemy.GetComponent<Sc_EnemyHealth>().SetId(i);
+                
             }
         }
+
+        _startWaveButton.interactable = false;
         startedWave = false;
         _waveNumber++;
     }
