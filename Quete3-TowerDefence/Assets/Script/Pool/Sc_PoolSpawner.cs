@@ -7,7 +7,6 @@ public class Sc_PoolSpawner : MonoBehaviour
     public bool startedWave = false;
     
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField, Min(0.0f)] private float _enemySpawnRate = 0.5f;
     [SerializeField] private Button _startWaveButton;
 
     [SerializeField] private Sc_Path _pathList;

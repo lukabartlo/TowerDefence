@@ -5,9 +5,6 @@ public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
 {
     public float speed;
 
-    [SerializeField, Min(0.0f)] private float _duration;
-
-    private float _timer;
     private Sc_Pool<Sc_Enemies> _pool;
 
     private int _tileIndex;
@@ -16,7 +13,6 @@ public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
 
     private void OnEnable()
     {
-        _timer = 0.0f;
     }
 
     private void Update()
