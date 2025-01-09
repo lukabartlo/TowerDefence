@@ -8,19 +8,9 @@ public class Sc_DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     [SerializeField] private GameObject _tower;
     [SerializeField] private LayerMask _tileLayer;
 
-    private float _radius = 1.0f;
+    private float _radius = 0.5f;
 
     private GameObject _currentPos;
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
-    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -38,9 +28,10 @@ public class Sc_DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     {
         Collider2D[] HitCollidersReviewMax = Physics2D.OverlapCircleAll(_currentPos.transform.position, _radius, _tileLayer);
 
-        if (HitCollidersReviewMax.Length >= 1)
+        Debug.Log(HitCollidersReviewMax.Length);
+        if (HitCollidersReviewMax.Length >= 2)
         {
-            Destroy(_tower);
+            Destroy(_currentPos);
         }
     }
 }
