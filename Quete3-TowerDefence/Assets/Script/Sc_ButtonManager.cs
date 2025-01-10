@@ -8,6 +8,7 @@ public class Sc_ButtonManager : MonoBehaviour
     [SerializeField] private GameObject _pause;
     [SerializeField] private GameObject _victory;
     [SerializeField] private Sc_PoolSpawner _startedWave;
+    [SerializeField] private Sc_PlayerStats _currentwave;
 
     public void StartGame()
     {
@@ -69,6 +70,7 @@ public class Sc_ButtonManager : MonoBehaviour
 
     public void StartWave()
     {
+        _currentwave.currentWave++;
         _startedWave.startedWave = true;
     }
 }

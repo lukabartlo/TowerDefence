@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Sc_DefenceAttack : MonoBehaviour
@@ -10,12 +7,16 @@ public class Sc_DefenceAttack : MonoBehaviour
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _firingPoint;
 
+    private bool _isPlaced = false;
     private Transform _target = null;
     private float _timeUntilFire = 0f;
     private float _rotationSpeed = 300f;
 
     private void Update()
     {
+        if (!_isPlaced)
+            return;
+
         if (_target == null)
         {
             FindTarget();
@@ -29,24 +30,18 @@ public class Sc_DefenceAttack : MonoBehaviour
             _target = null;
             return;
         }
+
         else 
         {
             _timeUntilFire += Time.deltaTime;
             if (_timeUntilFire >= _stats.attackSpeed)
             {
-                Debug.Log("test");
                 Shoot();
-                _timeUntilFire = 0f; 
+                _timeUntilFire = 0f;
             }
         }
     }
-    private void Shoot()
-    {
-        GameObject bulletObj = Instantiate(_bulletPrefab, _firingPoint.position, Quaternion.identity);
-        Sc_Bullet bullet = bulletObj.GetComponent<Sc_Bullet>();
-        bullet.SetTarget(_target);
-    }
-
+    
     private void FindTarget()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _stats.range, _ennemyLayer);
@@ -69,9 +64,21 @@ public class Sc_DefenceAttack : MonoBehaviour
         return Vector2.Distance(_target.position, transform.position) <= _stats.range;
     }
 
+    private void Shoot()
+    {
+        GameObject bulletObj = Instantiate(_bulletPrefab, _firingPoint.position, Quaternion.identity);
+        Sc_Bullet bullet = bulletObj.GetComponent<Sc_Bullet>();
+        bullet.SetTarget(_target);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
+    }
+
+    public void SetIsPlaced(bool value)
+    {
+        _isPlaced = value;
     }
 
     private void OnDrawGizmos()

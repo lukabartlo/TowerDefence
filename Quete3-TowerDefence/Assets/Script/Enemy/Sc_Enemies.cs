@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
 {
     public float speed;
+    public int health;
+    public int cashDrop;
 
     private Sc_Pool<Sc_Enemies> _pool;
 
@@ -11,9 +14,8 @@ public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
     private Transform _tileTarget;
     private List<Transform> _tilesMap = new List<Transform>();
 
-    private void OnEnable()
-    {
-    }
+    public Action<Sc_Enemies> onDeath;
+    public Action<Sc_Enemies> exiting;
 
     private void Update()
     {
@@ -32,6 +34,7 @@ public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
             if (_tileIndex >= _tilesMap.Count)
             {
                 _pool.Release(this);
+                exiting?.Invoke(this);
                 return;
             }
 
@@ -58,5 +61,16 @@ public class Sc_Enemies : MonoBehaviour, Sc_IPooledObject<Sc_Enemies>
     public void SetActive(bool active)
     {
         gameObject.SetActive(active);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        health -= collision.gameObject.GetComponent<Sc_Bullet>().towerDamage.damage;
+        if (health <= 0)
+        {
+            _pool.Release(this);
+            transform.position = Vector2.one * 999;
+            onDeath?.Invoke(this);
+        }
     }
 }

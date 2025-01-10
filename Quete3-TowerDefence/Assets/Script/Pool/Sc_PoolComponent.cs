@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Pool;
 
 public class Sc_PoolComponent<T> : Sc_IPool<T> where T : Component, Sc_IPooledObject<T>
 {
@@ -15,7 +14,7 @@ public class Sc_PoolComponent<T> : Sc_IPool<T> where T : Component, Sc_IPooledOb
         Assert.IsNotNull(prefab, "The prefab cannot be null.");
         _pool = new Sc_Pool<T>(() =>
         {
-            GameObject gameObject = Object.Instantiate(prefab);
+            GameObject gameObject = Object.Instantiate(prefab, Vector2.one * 999, Quaternion.identity);
             return gameObject.GetComponent<T>();
         },
         (pooledObject) => { pooledObject.gameObject.SetActive(true); },

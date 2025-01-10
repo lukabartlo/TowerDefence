@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class Sc_DefenceStats : MonoBehaviour
 {
-    public float damage;
+    public int damage;
     public float range;
     public float attackSpeed;
-    public float price;
+    public int price;
 }
-

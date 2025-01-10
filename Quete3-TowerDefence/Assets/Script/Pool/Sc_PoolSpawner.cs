@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class Sc_PoolSpawner : MonoBehaviour
     
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private Button _startWaveButton;
+    [SerializeField] private Sc_PlayerStats _playerStats;
 
     [SerializeField] private Sc_Path _pathList;
     [SerializeField] private List<EnemyWaves> _waves = new List<EnemyWaves>();
@@ -52,13 +54,28 @@ public class Sc_PoolSpawner : MonoBehaviour
                 enemy.transform.position = transform.position + Vector3.left * 2 * j;
                 enemy.SetTilesMap(_pathList.pathList);
                 enemy.GetComponent<Sc_EnemyHealth>().SetId(i);
-                
+                enemy.onDeath += OnEnemyDeath;
+                enemy.exiting += OnEnemyExit;
             }
         }
 
         _startWaveButton.interactable = false;
         startedWave = false;
         _waveNumber++;
+    }
+
+    private void OnEnemyDeath(Sc_Enemies enemy)
+    {
+        _playerStats.IncreasePlayerCash(enemy.cashDrop);
+        enemy.onDeath -= OnEnemyDeath;
+        enemy.exiting -= OnEnemyExit;
+    }
+
+    private void OnEnemyExit(Sc_Enemies enemy)
+    {
+        _playerStats.LoseHealth(enemy.health);
+        enemy.onDeath -= OnEnemyDeath;
+        enemy.exiting -= OnEnemyExit;
     }
 }
 
